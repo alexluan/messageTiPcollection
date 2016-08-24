@@ -1,0 +1,31 @@
+PODS:
+  - Masonry (0.6.4)
+  - pop (1.0.8)
+  - RBBAnimation (0.4.0)
+  - ReactiveCocoa (2.5):
+    - ReactiveCocoa/UI (= 2.5)
+  - ReactiveCocoa/Core (2.5):
+    - ReactiveCocoa/no-arc
+  - ReactiveCocoa/no-arc (2.5)
+  - ReactiveCocoa/UI (2.5):
+    - ReactiveCocoa/Core
+  - ReactiveViewModel (0.3):
+    - ReactiveCocoa (~> 2.4)
+
+DEPENDENCIES:
+  - Masonry (~> 0.6.3)
+  - pop (~> 1.0)
+  - RBBAnimation (= 0.4.0)
+  - ReactiveCocoa
+  - ReactiveViewModel (~> 0.3)
+
+SPEC CHECKSUMS:
+  Masonry: 281802d04d787ea2973179ee8bcb50500579ede2
+  pop: bb773ae2c791ca2629de13b347e7a8b450fa6a57
+  RBBAnimation: 4b2d66f6d993febce63cd564da934985313b9c59
+  ReactiveCocoa: e2db045570aa97c695e7aa97c2bcab222ae51f4a
+  ReactiveViewModel: 58918dcbcec2d3151195ab1ed9163c57a8163999
+
+PODFILE CHECKSUM: 27746f96e8d9b05f7a5404fb5a6d89fa815e42a9
+
+COCOAPODS: 1.0.1
