@@ -25,6 +25,8 @@
 
 @implementation ViewController{
     UIView *background;
+    
+    __block dispatch_source_t _timer;
 }
 static UIWindow *win;
 
@@ -38,7 +40,10 @@ static UIWindow *win;
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tapAction)];
     [_minImageView addGestureRecognizer:tapGesture];
     
-   
+    dispatch_queue_t queue=dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    dispatch_apply(10, queue, ^(size_t index) {
+        NSLog(@"%zu",index);
+    });
 }
 
 - (void)viewDidAppear:(BOOL)animated{
@@ -100,8 +105,31 @@ static UIWindow *win;
 }
 
 - (IBAction)btnAction:(id)sender {
-//    [AFMInfoBanner showAndHideWithText:@"asdfasdf" style:AFMInfoBannerStyleInfo];
-//    [MyInfoBanner show:@"asdfasdf"];
-    [BLStatusMessageInfo bl_showStateMessageInof:@"ASDFASDF"];
+    //倒计时时间
+    __block NSInteger timeOut = 5;
+    
+    if (!_timer) {
+        dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+        _timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, queue);
+        //每秒执行一次
+        /**
+         start参数控制计时器第一次触发的时刻。参数类型是 dispatch_time_t，这是一个opaque类型，我们不能直接操作它。我们得需要 dispatch_time 和  dispatch_walltime 函数来创建它们。另外，常量  DISPATCH_TIME_NOW 和 DISPATCH_TIME_FOREVER 通常很有用。
+         interval参数没什么好解释的。
+         leeway参数比较有意思。这个参数告诉系统我们需要计时器触发的精准程度。所有的计时器都不会保证100%精准，这个参数用来告诉系统你希望系统保证精准的努力程度。如果你希望一个计时器没五秒触发一次，并且越准越好，那么你传递0为参数。另外，如果是一个周期性任务，比如检查email，那么你会希望每十分钟检查一次，但是不用那么精准。所以你可以传入60ull * NSEC_PER_SEC，告诉系统60秒的误差是可接受的。
+         */
+        //    dispatch_source_set_timer(_timer, dispatch_walltime(NULL, 0), 1.0 * NSEC_PER_SEC, 0);
+        dispatch_source_set_timer(_timer, dispatch_walltime(DISPATCH_TIME_NOW, 5*NSEC_PER_SEC) , 1.0* NSEC_PER_SEC, 0);
+        dispatch_source_set_event_handler(_timer, ^{
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [BLStatusMessageInfo bl_showStateMessageInof:@"ASDFASDF"];
+            });
+            dispatch_suspend(_timer);
+        });
+
+    }
+        dispatch_resume(_timer);
+   
+
+   
 }
 @end
